@@ -1,6 +1,8 @@
 Go y WebAssembly: interactuando con la API JavaScript de tu Navegador Web
 =====================================================
 
+Por [Mario Macías Lloret](http://macias.info).
+
 [WebAssembly (abreviado WASM)](https://webassembly.org/) promete llevar a un
 siguiente nivel la programación sobre navegadores web. Hasta hace poco, los
 navegadores solo eran capaces de ejecutar programas escritos en JavaScript/ECMAScript
@@ -55,7 +57,7 @@ HTTP o HTTPS. Se puede utilizar cualquier servidor HTTP simple, aunque en este
 capítulo crearemos nuestro servidor HTTP para probar el código de los tutoriales
 sin tener que instalar ni configurar software adicional en nuestro ordenador.
 
-### 1. Creación del proyecto
+## Creación del proyecto
 
 Nuestro proyecto Go/WASM tendrá la siguiente estructura de directorios y
 archivos:
@@ -79,18 +81,35 @@ archivos:
   `site/main.wasm`.
 
 
-### Download `wasm_exec.js`
+## Obtención de `wasm_exec.js`
 
-The `wasm_exec.js` file is available in your standard Go installation. Just copy
-it into the `site` folder with the following command:
+El fichero `wasm_exec.js` está disponible en la instalación estándar de Go,
+bajo el directorio `${GOROOT}/misc/wasm/wasm_exec.js`. Para saber la localización
+de `${GOROOT}` puede ejecutar el comando `go env GOROOT`. Por ejemplo:
+
+```
+$ go env GOROOT
+/usr/local/Cellar/go/1.15.3/libexec
+````
+
+La salida anterior indicaría que el fichero `wasm_exec.js` se encuentra, en el
+ordenador en que se ha ejecutado el comando, en la ruta:
+
+```
+/usr/local/Cellar/go/1.15.3/libexec/misc/wasm/wasm_exec.js 
+```
+
+Puede copiar directamente ese archivo a la carpeta `site` del proyecto. Por
+ejemplo, en Linux o Mac:
 
 ```
 cp "$(go env GOROOT)/misc/wasm/wasm_exec.js" ./site/
 ```
 
-### Create your HTML file
+### 3. Crear el fichero HTML
 
-For example, let's create an `index.html` file under the `site` folder:
+Cree el fichero `index.html`, por ejemplo, en la carpeta `site` del proyecto.
+Copie el siguiente contenido:
 
 ```html
 <html>
@@ -110,13 +129,14 @@ For example, let's create an `index.html` file under the `site` folder:
 </html>
 ```
 
-The file is empty. It just loads the `wasm_exec.js` and fetches the `main.wasm`
-file that is created in the following section.
+Este archivo está vacío. Simplemente carga el fichero `wasm_exec.js`, que
+a su vez cargará el fichero `main.wasm` que se creará en la siguiente
+sección.
 
-### Compile your code into `main.wasm`
+## Compilación de código Go en `main.wasm`
 
-Let's create a dummy Go program in the `./main-wasm/main.go` path of
-your project:
+Como prueba, crearemos un programa de prueba muy sencillo, en la ruta
+`./src/main.go` del proyecto:
 
 ```go
 package main
@@ -124,27 +144,28 @@ package main
 import "log"
 
 func main() {
-    log.Println("Hello Gophers!")
+    log.Println("¡Hola, Wasmeros!")
 }
 ```
 
-And let's compile it into the `./site/main.wasm` binary file:
+Para compilarlo, es necesario ejecutar el comando `go build`, pero con
+las variables de entorno `GOOS=js` y `GOARCH=wasm` para indicar a `go build`
+que el archivo generado no será un ejecutable nativo sino un archivo WASM:
 
 ```
-GOOS=js GOARCH=wasm go build -o ./site/main.wasm ./wasm-main/.
+GOOS=js GOARCH=wasm go build -o ./site/main.wasm ./src/.
 ```
 
-Please observe that you need to set the `GOOS` and `GOARCH` environment
-variables to `js` and `wasm`, respectively.
+## Ejecución del binario WASM
 
-### Execute your Go WebAssembly program
+Por seguridad, su navegador Web no ejecutará el fichero WASM si abre el archivo
+`index.hml` directamente en su navegador web. Necesitará un servidor Web que
+le envíe toda la información al navegador vía HTTP o HTTPS.
 
-You will need a Web server to allow fetching all the information. Modern IDEs
-like IntelliJ IDEA bring their own bundled server, so you can preview your local
-files as if they were in a remote server.
-
-If you are using a plain text editor and don't want to install any web server,
-the following `server.go` file in your project root will do the job:
+No es necesario que se moleste a instalar un servidor en la máquina que usa
+para programar. Por suerte, crear un servidor Web sencillo en Go es tan sencillo
+como crear el fichero `server.go` en la raíz del proyecto, con el siguiente
+contenido:
 
 ```go
 package main
@@ -156,103 +177,126 @@ import (
 	"os"
 	"path/filepath"
 )
-// super-simple debug server to test our Go WASM files
+
 func main() {
     http.HandleFunc("/", func(w http.ResponseWriter, req *http.Request) {
+        // por defecto, cargamos el archivo `index.html`
         if req.RequestURI == "/" {
             req.RequestURI = "/index.html"
         }
+        // si no, el archivo que nos llegue por la URL lo iremos a buscar
+        // a la carpeta "site"
         file, err := os.Open(filepath.Join("./site", req.RequestURI))
         if err == nil {
+            // mandamos el contenido del archivo leído hacia la respuesta HTTP
             io.Copy(w, file)
         }
+        // por sencillez, ignoramos cualquier gestión de errores HTTP
+        // por ejemplo, si no se encuentra un archivo
     })
+    // el servidor escuchará en el puerto 8080 de la máquina local
     fmt.Println(http.ListenAndServe(":8080", nil))
 }
 ```
 
-When you run the server (e.g. `go run server.go`) and go to
-`http://localhost:8080` in your browser, you should see an empty screen. But if
-you open the _Console_ in the _developer tools_ section of your browser,
-you should see that the `log` command in the `./main-wasm/main.go` has been
-executed:
+Las diversas funciones y elementos del programa anterior están explicadas en
+en los siguientes capítulos del libro *Programación en Go*:
 
-![](/static/assets/2020/03/go_wasm/log_console.png)
+* Capítulo 13: Gestión de errores
+* Capítulo 14: Entrada y Salida
+* Capítulo 17: Servicios Web
 
-To allow Go interacting with a Web Page and read/write contents in the actual
-HTML document, let's see some methods of the `syscall/js` library.
+Si ejecuta el servidor mediante `go run server.go` y abre la dirección local
+`http://localhost:8080` del navegador, debería ver una ventana vacía. Pero
+si abre la Consola en las herramientas de desarrollador de su navegador,
+debería ver un mensaje similar al siguiente, mostrando que el archivo WASM
+se ha ejecutado:
 
-## `syscall/js` basic functionalities
+![](img/log.png)
 
-Let's walk through the basic functionalities of `syscall/js` with a simple
-example:
+El resultado puede ser un poco decepcionante. Para permitir a nuestro programa
+en Go interactuar con el documento HTML y leer/escribir contenidos en éste, 
+deberemos utilizar los métodos del paquete `syscall/js`.
 
-```go
- 1: func main() {
- 2: 	window := js.Global()
- 3: 	doc := window.Get("document")
- 4:	body := doc.Get("body")
- 5:	div := doc.Call("createElement", "div")
- 6:	div.Set("textContent", "hello!!")
- 7:	body.Call("appendChild", div)
- 8:	body.Set("onclick",
- 9:		js.FuncOf(func(this js.Value, args []js.Value) interface{} {
-10:			div := doc.Call("createElement", "div")
-11:			div.Set("textContent", "click!!")
-12:			body.Call("appendChild", div)
-13:			return nil
-14:		}))
-15:	<-make(chan struct{})
-16: }
+## Funcionalidades básicas de `syscall/js` basic functionalities
+
+Organizaremos una ruta a través de las funcionalidades básicas de `syscall/js`
+con un ejemplo sencillo que, cada vez
+que se haga click en la ventana, añada una línea mostrando `¡click!` en el
+documento HTML.
+
+![](img/demo.png)
+
+
+En Javascript, se requerirían las siguientes líneas de código:
+
+```js
+document.body.onclick = function() {
+    var div = document.createElement('div');
+    div.textContent = '¡clic!';
+    document.body.appendChild(div);
+};
 ```
 
-This code adds to the HTML document a `<div>` element containing the `Hello!!`
-message. In addition, the program is subscribed to the `onclick` event of the
-document, and each time the user clicks the document, a new `<div>` is added,
-containing the `click!!` text.
+El equivalente en Go requeriría acceder a los mismos
+elementos y propiedades, pero no directamente a través del
+lenguaje sino a través de diversos método de la biblioteca
+`syscall/js`:
 
-![](/static/assets/2020/03/go_wasm/result.png)
 
-The functions used in this example are:
+```go
+ 1: package main
+ 2: 
+ 3: import "syscall/js"
+ 4: 
+ 5: func main() {
+ 6:     window := js.Global()
+ 7:     doc := window.Get("document")
+ 8:     body := doc.Get("body")
+ 9:     body.Set("onclick",
+10:         js.FuncOf(func(this js.Value, args []js.Value) interface{} {
+11:             div := doc.Call("createElement", "div")
+12:             div.Set("textContent", "¡clic!")
+13:             body.Call("appendChild", div)
+14:             return nil
+15:         }))
+16:     <-make(chan struct{})
+17: }
+```
 
-`js.Global()` in Line 1 returns the global object, usually the equivalent
-to the JavaScript `window` object: the _root_ object that will allow you accessing
-all the other elements in your page.
+La función `js.Global()` de la línea 6 retorna el objeto global. Generalmente
+equivaldría a la variabla global `window` en JavaScript: el objeto raíz que
+permite acceder a los demás elementos de la página. En el anterior ejemplo de
+JavaScript no era necesario mencionarlo, pero en Go sí, ya que no se asume
+ningún contexto por defecto.
 
-`js.Global()` returns a `js.Value`: a struct that can store any JavaScript type.
-You will get used to work with `js.Value`, as it's what most functions and
-properties return.
+`js.Global()` retorna un objeto del tipo `js.Value`: un estructura que puede guardar un valor de cualquier tipo de dato
+de JavaScript.
 
-The `Get` method invoked on a `js.Value` returns another `js.Value`
-belonging to the property passed as argument. For example, the `Get` invocations
-in lines 3, and 4. 
+El método `Get` invocado sobre cualquier `js.Value` permite
+acceder a una propiedad de ese valor, retornando otro `js.Value`.
+Por ejemplo, `window.Get("document")` en la línea 7 equivaldría
+a invocar `window.document` en JavaScript, y `doc.Get("body")`
+de la línea 8 equivaldría a invocar `document.body` en JavaScript.
 
-The opposite of `Get` is the `Set` function, which receives two arguments: the
-name of a property, and its new value. The value doesn't
-need to be a `js.Value` instance: you can pass numbers or strings, like in
-lines 6 and 11, and even instances of `js.Func` (lines 8-9), that specify
-a function to be assigned to this property. In the example of lines 8-9,
-a given Go function is assigned to the `onclick` event.
+Si `Get` nos permite acceder al valor de una propiedad, `Set` permite
+cambiar dicho valor. El comando `div.Set("textContent", "¡clic!")` de la
+línea 12 equivaldría a la línea `div.textContent = '¡clic!';` de JavaScript.
+El primer comando de `Set` es un `string` con el nombre de la propiedad a
+añadir o cambiar, el segundo comando puede ser un tipo de dato básico (números,
+cadenas, ...) pero también puede ser otro `js.Value` o incluso una función,
+que en Go se representa según el tipo `js.Func`, y se puede instanciar
+mediante la función `js.FuncOf`, como se muestra en la línea 10. Las
+líneas 9 y 10 del ejemplo equivalen a la orden `document.body.onclick = function() {` de JavaScript.
 
-Finally, the example code also uses the `Call` method of `js.Value` to invoke
-methods of a given type. `Call` requires the name of a function as the first
-argument, following by a variable number of arguments. Examples of `Call` are
-seen in lines 5, 7, 10 an 12. As for `Set`, the arguments can be native Go types
-or other `js.Value` or `js.Func`.
+Para invocar métodos JavaScript, el código de ejemplo también utiliza el método `Call` de
+`js.Value`. `Call` necesita, como primer argumento, el nombre de la función
+o método a invocar, seguido de los argumentos que esta requiera. El ejemplo
+de la línea 11 equivaldría a la invocación `document.createElement("div")` y
+el de la línea 13 equivaldría a `body.appendChild(div)`. Después del
+primer argumento de `Call`, que ha de ser del tipo `string`, los demás argumentos
+pueden ser tipos de datos básicos, `js.Value`, o incluso otros `js.Func`.
 
-The simplest way to instantiate a `js.Func` is by means of the `js.FuncOf` Go
-auxiliary function.
+## Para saber más
 
-## To know more
-
-This introduction tutorial does not cover many other functionalities, as
-instantiating JavaScript objects. For more details, please check the
 [`syscall/js` package documentation](https://golang.org/pkg/syscall/js/).
-
-The examples of this blog post are available in
-[my Github repo](https://github.com/mariomac/go-wasm-tutorial).
-
-
-
- 
-
