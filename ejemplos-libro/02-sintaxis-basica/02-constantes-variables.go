@@ -11,6 +11,13 @@ var Global int
 // initialized global variable (type inference)
 var GlobalCounter = 2
 
+// Network reliability constants
+const (
+	TimeoutMS  = 1000
+	MaxRetries = 4
+	FailOnErr  = true
+)
+
 func main() {
 
 	GlobalCounter = int32(6)
