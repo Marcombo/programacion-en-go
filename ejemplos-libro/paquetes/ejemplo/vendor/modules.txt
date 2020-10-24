@@ -1,0 +1,5 @@
+# github.com/mariomac/analizador v1.0.0
+## explicit
+github.com/mariomac/analizador
+# github.com/mariomac/sumadormapa v1.0.0
+github.com/mariomac/sumadormapa/sumador
