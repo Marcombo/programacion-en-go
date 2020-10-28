@@ -1,6 +1,9 @@
 Go y WebAssembly: interactuando con la API JavaScript de tu Navegador Web
 =====================================================
 
+Capítulo online para el libro [Programación en Go](https://www.marcombo.com/programacion-en-go-9788426732330/)
+de la editorial Marcombo.
+
 Por [Mario Macías Lloret](http://macias.info).
 
 [WebAssembly (abreviado WASM)](https://webassembly.org/) promete llevar a un
@@ -297,6 +300,109 @@ el de la línea 13 equivaldría a `body.appendChild(div)`. Después del
 primer argumento de `Call`, que ha de ser del tipo `string`, los demás argumentos
 pueden ser tipos de datos básicos, `js.Value`, o incluso otros `js.Func`.
 
+## Aislando la interacción con JavaScript detrás de bibliotecas
+
+No le negaré que el ejemplo de la sección anterior puede resultar decepcionante. Lo que
+en JavaScript podía especificarse en 4 líneas, ha requerido de al menos 9 líneas de Go,
+con un léxico mucho más retorcido.
+
+Sin embargo, puede aislar la interacción con JavaScript detrás de tipos de datos y métodos de Go,
+de tal manera que usted pueda centrarse en el uso de Go para programar la Web.
+
+Como ejemplo, vamos a realizar una animación en Go sobre un elemento Canvas de HTML:
+
+![](img/hola.gif)
+
+Para ello, vamos a hacer uso del módulo externo [Gorrazo](https://github.com/mariomac/gorrazo),
+que le permite gestionar y dibujar sobre un objeto Canvas situado en su página web.
+
+Para ello, primeramente es necesario incorporar el siguiente módulo en su `go.mod`:
+
+```
+github.com/mariomac/gorrazo
+```
+
+Para ello, puede consultar el capítulo 9 del libro Programación en Go, sobre la organización del código.
+
+A continuación, será necesario añadir el siguiente elemento `<canvas>` en el cuerpo 
+de su archivo `index.html`, entre las etiquetas `<body>` y `</body>`:
+
+```html
+    <canvas id="lienzoDibujo"></canvas>
+```
+
+Ahora, podrá hacer uso del paquete `github.com/mariomac/gorrazo/pkg/draw` para obtener
+acceso al canvas y dibujar sobre éste.
+
+El siguiente código de ejemplo intercala comentarios explicando qué hacen los métodos
+usados:
+
+```go
+package main
+
+import (
+	"time"
+
+	"github.com/mariomac/gorrazo/pkg/draw"
+)
+
+func main() {
+	// obtenemos el canvas con id="lienzoDibujo"
+	// y lo configuramos para que ocupe toda la pantalla
+	c := draw.GetCanvas("lienzoDibujo",
+		draw.FullScreen(true))
+
+	rotacion := float64(0)
+	for {
+		// dimensión del canvas
+		w, h := c.GetWidth(), c.GetHeight()
+
+		// creación de un gradiente de fondo
+		gradient := c.CreateLinearGradient(0, 0, w, h)
+		gradient.AddColorStop(1, "#ff00ff")
+		gradient.AddColorStop(0.3, "#888888")
+		gradient.AddColorStop(0, "#00ff88")
+		c.FillStyleGradient(gradient)
+		c.FillRect(0, 0, w, h)
+
+		// Guardar el estado del canvas
+		c.Save()
+
+		// Sombra del texto
+		c.ShadowBlur(15)
+		c.ShadowColor("black")
+		c.ShadowOffsetX(10)
+		c.ShadowOffsetY(20)
+
+		// Color y fuente del texto
+		c.FillStyle("yellow")
+		c.Font("40px Arial")
+
+		// Llevar el texto hacia el centro, y rotarlo
+		c.Translate(w/2, h/2)
+		c.Rotate(rotacion)
+
+		// dibujar el texto, desplazándolo 200 puntos a la izquierda
+		// y 20 puntos hacia arriba
+		c.FillText("¡Hola, gopher!", -200, -20)
+
+		// restaurar el estado del canvas al que
+		// era antes de llamar a c.Save()
+		// eliminará sombras, rotaciones, colore....
+		c.Restore()
+
+		// actualiza rotación y espera 20 milisegundos
+		rotacion += 0.02
+		time.Sleep(20 * time.Millisecond)
+	}
+}
+```
+
+Gracias a una biblioteca de terceros, que aísla la interacción con JavaScript, 
+hemos generado una animación la mar de *resultona* sin tener que trazar una
+sola línea de JavaScript, con las ventajas de rendimiento que aporta WebAssembly.
+
 ## Para saber más
 
-[`syscall/js` package documentation](https://golang.org/pkg/syscall/js/).
+[Documentación del paquete `syscall/js`](https://golang.org/pkg/syscall/js/).
+[Libro "Programación en Go". Ed. Marcombo](https://www.marcombo.com/programacion-en-go-9788426732330/)
