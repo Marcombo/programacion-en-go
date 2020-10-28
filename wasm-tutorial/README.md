@@ -322,7 +322,7 @@ Para ello, primeramente es necesario incorporar el siguiente módulo en su `go.m
 github.com/mariomac/gorrazo
 ```
 
-Para ello, puede consultar el capítulo 9 del libro Programación en Go, sobre la organización del código.
+Para saber cómo hacerlo, puede consultar el capítulo 9 del libro Programación en Go, sobre la organización del código.
 
 A continuación, será necesario añadir el siguiente elemento `<canvas>` en el cuerpo 
 de su archivo `index.html`, entre las etiquetas `<body>` y `</body>`:
