@@ -3,12 +3,13 @@ package main
 import "fmt"
 
 func main() {
-	var bigNum int64
-	var smallNum int8 = 21
+	var numeroGrande int64
+	var numeroPequeño int8 = 21
 
-	// golang does not do implicit type conversions
-	bigNum = int64(smallNum)
+	// Go no soporta conversiones implícitas de tipos
+	// debe, realizarse explicitamente
+	numeroGrande = int64(numeroPequeño)
 
-	fmt.Println("bignum, smallnum:", bigNum, smallNum)
+	fmt.Println("numeroGrande, smallnum:", numeroGrande, numeroPequeño)
 
 }

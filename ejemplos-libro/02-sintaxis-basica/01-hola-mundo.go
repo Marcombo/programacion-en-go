@@ -2,10 +2,10 @@ package main
 
 import "fmt"
 
-// main function is the starting point of the program.
-// It must be placed in the main package
+// la función "main" es el punto de inicio de un programa
+// debe situarse en el paquete "main"
 func main() {
-	/* Multiline comments
-	   are C-like */
-	fmt.Println("Hello, Java coders!")
+	/* comentarios
+	   multilínea */
+	fmt.Println("¡Hola, geómidos!")
 }

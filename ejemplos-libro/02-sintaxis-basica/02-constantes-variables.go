@@ -2,16 +2,17 @@ package main
 
 import "fmt"
 
-// global constant. Go does not use the UPPER_SNAKE_CASE
+// Constante global
 const Pi = 3.1415
 
-// uninitialized (default to 0) global variable
+// variable global no inicializada (tomará el valor 0)
 var Global int
 
-// initialized global variable (type inference)
+// variable global inicializada
+// (por inferencia de tipos, será un int)
 var GlobalCounter = 2
 
-// Network reliability constants
+// Constantes globales agrupadas
 const (
 	TimeoutMS  = 1000
 	MaxRetries = 4
@@ -20,13 +21,11 @@ const (
 
 func main() {
 
-	GlobalCounter = int32(6)
+	local := "Forma preferida de declarar una variable inicializada"
 
-	local := "Preferred way to define an initialized variable"
+	local = "no confundir el operador := de declaración con el = de asignación"
 
-	local = "don't confuse short initialization := with assignment = operator"
-
-	fmt.Print("if you define but don't read a local variable,")
-	fmt.Println("you will get a compiler error")
+	fmt.Print("si defines pero no usas una variable local,")
+	fmt.Println("obtendrías un error de compilación")
 	fmt.Println(local)
 }
