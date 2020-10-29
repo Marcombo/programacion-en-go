@@ -20,7 +20,4 @@ func main() {
 	fmt.Println("invocando una función")
 	funcion1()
 	fmt.Println("saliendo con normalidad")
-	adfasdf
-	asdf
-	asdfadfs
 }

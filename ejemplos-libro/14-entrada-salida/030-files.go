@@ -33,16 +33,4 @@ func main() {
 	}
 	fmt.Printf("leídos %v bytes: %s\n", n, string(leido[:n]))
 
-	/* other fichero operations:
-	os.Chdir()
-	os.Chmod()
-	os.Link()
-	os.Mkdir()
-	os.MkdirAll()
-	os.Chtimes()
-	os.OpenFile()
-	os.Rename()
-	os.RemoveAll()
-	os.Remove()
-	*/
 }

@@ -26,8 +26,4 @@ multilínea`)
 		fmt.Println("error inesperado:", err.Error())
 		return
 	}
-
-	/*
-		Also mention: bufio.Scanner, bufio.Writer
-	*/
 }

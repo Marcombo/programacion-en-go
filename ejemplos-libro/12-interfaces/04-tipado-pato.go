@@ -14,5 +14,7 @@ func MuestraMS(c ConversorMilisegundos) {
 }
 
 func main() {
+	// el tipo time.Duration, que ya existe, se amolda a la
+	// interfaz ConversorMilisegundos, recién creada
 	MuestraMS(23 * time.Second)
 }

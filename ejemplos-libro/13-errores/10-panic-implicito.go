@@ -3,17 +3,18 @@ package main
 import "fmt"
 
 func add(n int, np *int) int {
+	// si np == nil, lanzará pánico
 	return n + *np
 }
 
 func main() {
 	defer func() {
 		if r := recover() ; r != nil {
-			fmt.Println("Recovering panic:", r)
+			fmt.Println("Recuperándonos de pánico:", r)
 		}
 	}()
 	var nilRef *int = nil
-	fmt.Println("adding 3 to the global ref: ", add(3, nilRef))
+	fmt.Println("*nilRef + 3: ", add(3, nilRef))
 
-	fmt.Println("This won't be printed")
+	fmt.Println("Esto no se mostrará")
 }

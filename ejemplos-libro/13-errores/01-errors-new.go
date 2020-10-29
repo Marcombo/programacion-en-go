@@ -7,7 +7,7 @@ import (
 
 func divide(dividend, divisor int) (int, error) {
 	if divisor == 0 {
-		return 0, errors.New("can't divide by zero")
+		return 0, errors.New("no puedo dividir por cero")
 	}
 	return dividend / divisor, nil
 }
@@ -18,5 +18,5 @@ func main() {
 		fmt.Println("error!", err)
 		return
 	}
-	fmt.Println("result: ", div)
+	fmt.Println("resultado: ", div)
 }

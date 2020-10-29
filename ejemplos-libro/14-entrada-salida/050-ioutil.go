@@ -13,29 +13,19 @@ func main() {
 
 	fileName := path.Join(tmpDir, "ioutil.txt")
 
-	err = ioutil.WriteFile(fileName, []byte("some text\ngoes here."), 0644)
+	err = ioutil.WriteFile(fileName, []byte("algo de texto\naqui"), 0644)
 	exitIfErr(err)
 
 	contents, err := ioutil.ReadFile(fileName)
 	exitIfErr(err)
 
-	fmt.Println("read from ", fileName, ":")
+	fmt.Println("leido desde ", fileName, ":")
 	fmt.Println(string(contents))
-	/*
-		Other ioutil functions:
-			ReadAll,
-			ReadDir,
-			ReadFile,
-			TempDir,
-			TempFile,
-			WriteFile
-	*/
 }
 
-// maybe a convention to use across the book for the sake of simplicity?
 func exitIfErr(err error) {
 	if err != nil {
-		fmt.Println("exiting. Cause: ", err.Error())
+		fmt.Println("Fallo: ", err.Error())
 		os.Exit(-1)
 	}
 }
