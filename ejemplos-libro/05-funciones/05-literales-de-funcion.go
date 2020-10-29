@@ -5,9 +5,11 @@ import "fmt"
 func Suma(a, b int) int {
 	return a + b
 }
+
 func Multiplica(a, b int) int {
 	return a * b
 }
+
 func main() {
 	var operador func(int, int) int
 	operador = Suma

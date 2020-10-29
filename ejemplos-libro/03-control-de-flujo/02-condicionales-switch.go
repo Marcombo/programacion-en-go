@@ -5,11 +5,10 @@ import (
 	"runtime"
 )
 
-func main()  {
+func main() {
 
-	fmt.Print("Your processor architecture is ")
+	fmt.Print("La arquitectura de su procesador es ")
 
-	// notice there is no break statement
 	arch := runtime.GOARCH
 	switch arch {
 	case "386":
@@ -20,9 +19,10 @@ func main()  {
 		fmt.Println(arch)
 	}
 
-	fmt.Print("Your operating system is ")
+	fmt.Print("Su sistema operativo es ")
 
-	// initiaization + check in the same statement (limits var scope)
+	// declaración de "os" en el mismo switch
+	// limita el ámbito de la variable
 	switch os := runtime.GOOS; os {
 	case "darwin":
 		fmt.Println("Mac OS X")
