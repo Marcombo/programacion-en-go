@@ -4,8 +4,6 @@ import (
 	"fmt"
 )
 
-// Go community don't really like encapsulation and using getters/setters just
-// to read/set a variable value
 type Cuboide struct {
 	Ancho    float64
 	Alto     float64

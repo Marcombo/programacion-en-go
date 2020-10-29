@@ -7,15 +7,18 @@ import (
 )
 
 func main() {
-	str1 := "The add"
-	str2 := str1 + " operator is a quick an simple " +
-		"way to concatenate strings. " +
-		"But you can't concatenate other value different than a String."
+	str1 := "El operador"
+	str2 := str1 + " de suma es una forma simple y rápida " +
+		"de concatenar cadenas. " +
+		"Pero solo puedes concatenar cadenas, y pierde" +
+		" velocidad si se concatenan varias cadenas en" +
+		" distintos ámbitos"
 	fmt.Println(str2)
 
-	str3 := fmt.Sprintf(`The C-like fmt.Sprint or fmt.Sprintf functions allow
-you providing a more detailed description of the data you
-concatenate (e.g. %.2f), but they are usually slower.`, 1.1)
+	str3 := fmt.Sprintf(`Las funciones fmt.Sprint o fmt.Sprintf
+permiten especificar un formato detallado para la
+composición de cadenas (por ejemplo %.2f),
+pero generalmente son más lentas que otras opciones.`, 1.1)
 	fmt.Println(str3)
 
 	var sb strings.Builder

@@ -3,11 +3,11 @@ package main
 import "fmt"
 
 func main() {
-	// In Go, arrays are values
+	// En Go, los vectores se tratan por valor
 	src := [5]int{1, 2, 3, 4, 5}
 	var dst [5]int
 
-	// that means, in assignments they are copied
+	// Eso significa que, en asignaciones, se copian
 	dst = src
 	src[0] = 9
 

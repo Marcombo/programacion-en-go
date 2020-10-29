@@ -8,5 +8,5 @@ import (
 func main() {
 	d := 67 * time.Second
 
-	fmt.Println(d, "is equivalent to", d.Milliseconds(), "milliseconds")
+	fmt.Println(d, "es equivalente a", d.Milliseconds(), "milisegundos")
 }

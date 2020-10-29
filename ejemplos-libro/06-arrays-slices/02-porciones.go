@@ -3,21 +3,22 @@ package main
 import "fmt"
 
 func main() {
-	// Go programs usually use slices instead of arrays,
-	// which are treated as references, and have many advantages:
+	// Generalmente usaremos porciones en vez de vectores
+	// son tratadas por referencia, y pueden tener un tamaño
+	// variable
 
 	s := []int{1, 2, 3, 4}
-	fmt.Println("before =", s)
+	fmt.Println("antes =", s)
 
 	s = append(s, 5, 6, 7)
-	fmt.Println("after =", s)
+	fmt.Println("despues =", s)
 
 	s1 := []int{1, 2, 3}
 	s2 := []int{4, 5, 6}
 	s1 = append(s1, s2...)
-	fmt.Println("concat =", s1)
+	fmt.Println("concatenación =", s1)
 
-	// 1- can grow dynamically
+	// 1- crecimiento dinámico
 	var sl []int
 	fmt.Printf("length: %v. capacity: %v\n", len(sl), cap(sl))
 	sl = append(sl, 1, 2, 3, 4)
@@ -25,13 +26,13 @@ func main() {
 	sl = append(sl, 5)
 	fmt.Printf("length: %v. capacity: %v\n", len(sl), cap(sl))
 
-	// 2- you can define an initial capacity to minimize resizing costs
-	sl = make([]int, 0, 10) // declare a slice of size 0 and capacity 10
+	// 2- puedes definir una capacidad inicial para minimizar costes de redimensionado
+	sl = make([]int, 0, 10) // tamaño 0, capacidad 10
 	fmt.Printf("length: %v. capacity: %v\n", len(sl), cap(sl))
 	sl = append(sl, 1)
 	fmt.Printf("length: %v. capacity: %v\n", len(sl), cap(sl))
 
-	// 3- you can provide views
+	// 3- se pueden proveer vistas
 	base := []int{1, 0, 3, 4, 5}
 	fmt.Println("base:", base)
 

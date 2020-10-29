@@ -26,13 +26,6 @@ func main() {
 		Pulgadas: 6,
 		Bateria:  2400,
 	}
-	// we can invoke embedded type functions
 	s.AplicaDescuento(0.15)
 	fmt.Printf("telefono con descuento %+v\n", s)
-
-	// Struct embedding is not inheritance:
-	// can't do that
-	// var g Aparato = Telefono{}
-	// nor
-	// var g *Aparato = &Telefono{}
 }

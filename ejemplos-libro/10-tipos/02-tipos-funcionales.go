@@ -19,7 +19,7 @@ func Cero() int {
 	return 0
 }
 
-func Contador() Generador {
+func Incremento() Generador {
 	cuenta := 0
 	return func() int {
 		cuenta++
@@ -35,7 +35,7 @@ func Aleatorio(semilla int64) Generador {
 }
 
 func main() {
-	cnt := Contador()
+	cnt := Incremento()
 	rnd := Aleatorio(456)
 	for i := 0; i < 5; i++ {
 		fmt.Println(GenerarTodo(Cero, cnt, rnd))

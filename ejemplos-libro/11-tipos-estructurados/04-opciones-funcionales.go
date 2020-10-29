@@ -45,4 +45,8 @@ func main() {
 	estu2 := NewEstudiante(Nombre("Pedro"), Descuento())
 	estu3 := NewEstudiante(Nombre("Juan"), Nacimiento(
 		time.Date(2001, 10, 12, 0, 0, 0, 0, time.UTC)))
+
+	// evitamos error de compilación por no usar las
+	// variables generadas como ejemplo
+	_, _, _ = estu1, estu2, estu3
 }

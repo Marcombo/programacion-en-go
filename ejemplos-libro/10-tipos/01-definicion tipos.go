@@ -8,7 +8,6 @@ type Nacimientos []Año
 type NombreNacimientos map[string]Año
 
 func main() {
-	// Since PopulationBirth type is a slice, you can use it as a slice
 	censo := Nacimientos{1979, 1983, 1965}
 	censo = append(censo, 1990)
 	censo = append(censo, 1955)
@@ -18,7 +17,7 @@ func main() {
 		suma += a
 	}
 
-	media := suma / Año(len(censo)) // explicit type conversion to Year, since len(...) is an int
+	media := suma / Año(len(censo))
 	fmt.Println("Año de nacimiento medio:", media)
 
 	// Same for instantiating MontlyAvgTemp
