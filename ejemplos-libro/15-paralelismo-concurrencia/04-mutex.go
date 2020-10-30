@@ -6,8 +6,6 @@ import (
 	"sync"
 )
 
-// Suma of all the elements of the array "v" located between the indices
-// start (inclusive) and end (exclusive)
 func Suma(porcion []int) int {
 	total := 0
 	for _, n := range porcion {
@@ -21,8 +19,11 @@ func main() {
 
 	v := []int{0, 1, 3, 1, 0, 7, 8, 9, 3, 3, 0, 2}
 
-	// experiment: most times this will work, but eventually will panic
+	// experimento: el programa nunca lanzará panic, porqu el
+	// acceso concurrente a totalSuma ahora está bien sincronizado
+	// mediante un mutex
 	for true {
+		mt := sync.Mutex{}
 		wg := sync.WaitGroup{}
 		wg.Add(tareasParalelas)
 
@@ -34,7 +35,10 @@ func main() {
 				inicio := s * len(v) / tareasParalelas
 				fin := (s + 1) * len(v) / tareasParalelas
 				suma := Suma(v[inicio:fin])
+
+				mt.Lock()
 				totalSuma += suma
+				mt.Unlock()
 			}()
 		}
 

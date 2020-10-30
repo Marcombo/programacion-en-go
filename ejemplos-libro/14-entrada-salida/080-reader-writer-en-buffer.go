@@ -16,6 +16,6 @@ func main() {
 	var clave string
 	var valor float32
 	fmt.Fscanf(&buff, "%s %f", &clave, &valor)
-	fmt.Printf("clave: %v. valoror: %v\n", clave, valor)
+	fmt.Printf("clave: %v. valor: %v\n", clave, valor)
 
 }

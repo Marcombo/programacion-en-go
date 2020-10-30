@@ -17,10 +17,8 @@ func Receptor(ch <-chan int) {
 }
 
 func main() {
-	ch := make(chan int, 10) //buffered channel
+	ch := make(chan int, 10)
 
-	// With a buffered channel, receiver and Emisor don't strictly need to go in
-	// different goroutines
 	go Receptor(ch)
 	Emisor(ch)
 }

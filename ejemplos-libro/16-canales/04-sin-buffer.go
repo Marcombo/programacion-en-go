@@ -19,8 +19,8 @@ func Receptor(ch <-chan int) {
 }
 
 func main() {
-	ch := make(chan int) //unbuffered channel
+	ch := make(chan int)
 
 	go Emisor(ch)
-	Receptor(ch) // Receiver and sender need to go in different goroutines
+	Receptor(ch)
 }

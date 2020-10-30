@@ -26,7 +26,4 @@ func main() {
 
 	MuestraRetardada(ctx, "Hola!!")
 	fmt.Println("finalizando")
-
-	//Hola a todos!
-	//finalizando
 }

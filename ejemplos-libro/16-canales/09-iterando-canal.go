@@ -25,15 +25,13 @@ func main() {
 		}()
 	}
 
-	// There is no guarantee of a fair delivery
 	dulces <- "Donut"
 	dulces <- "Crusán"
 	dulces <- "Ensaimada"
 	dulces <- "Pestiño"
 
-	close(dulces) // Important! or Eater goroutines won't end
+	close(dulces)
 
-	// don't need to sleep... just wait for completions
 	wg.Wait()
 	fmt.Println("Todos los dulces repartidos y engullidos")
 }

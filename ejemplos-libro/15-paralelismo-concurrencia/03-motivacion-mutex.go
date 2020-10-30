@@ -4,11 +4,9 @@ import (
 	"fmt"
 	"runtime"
 	"sync"
-	"sync/atomic"
 )
 
-// Suma of all the elements of the array "v" located between the indices
-// start (inclusive) and end (exclusive)
+// Suma todos los elementos
 func Suma(porcion []int) int {
 	total := 0
 	for _, n := range porcion {
@@ -22,12 +20,13 @@ func main() {
 
 	v := []int{0, 1, 3, 1, 0, 7, 8, 9, 3, 3, 0, 2}
 
-	// experiment: most times this will work, but eventually will panic
+	// experimento: lo repetimos indefinidamente, y el panic
+	// final acabará lanzándose por causa de una condición de carrera
 	for true {
 		wg := sync.WaitGroup{}
 		wg.Add(tareasParalelas)
 
-		totalSuma := int64(0)
+		totalSuma := 0
 		for t := 0; t < tareasParalelas; t++ {
 			s := t
 			go func() {
@@ -35,8 +34,7 @@ func main() {
 				inicio := s * len(v) / tareasParalelas
 				fin := (s + 1) * len(v) / tareasParalelas
 				suma := Suma(v[inicio:fin])
-
-				atomic.AddInt64(&totalSuma, int64(suma))
+				totalSuma += suma
 			}()
 		}
 

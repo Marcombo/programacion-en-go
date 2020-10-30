@@ -5,7 +5,6 @@ import (
 	"time"
 )
 
-// pseudo completable future
 func CentralMensajeria(sms, email, carta <-chan string) {
 	for {
 		select {

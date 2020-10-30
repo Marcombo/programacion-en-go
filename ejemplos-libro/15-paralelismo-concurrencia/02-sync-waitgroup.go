@@ -12,13 +12,13 @@ func main() {
 	wg.Add(numTareas)
 
 	for i := 0 ; i < numTareas; i++ {
-		numTarea := i // "i" is in the shared scope for all the goroutines
+		// "i" está compartida por todas las gorrutinas, así que
+		// la copiamos en una variable de ámbito exclusivo para cada
+		// gorrutina
+		numTarea := i
 		go func() {
 			defer wg.Done()
-			// emphasize that this does not guarantee the order of completion. E.g.:
-			// Running parallel task 2
-			// Running parallel task 0
-			// Running parallel task 1
+			// no se garantiza el orden de completado
 			fmt.Println("Ejecutando tarea", numTarea)
 		}()
 	}

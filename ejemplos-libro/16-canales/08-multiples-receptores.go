@@ -19,7 +19,6 @@ func main() {
 	go Engullidor("Aina", dulces)
 	go Engullidor("Judit", dulces)
 
-	// There is no guarantee of a fair delivery
 	dulces <- "Donut"
 	time.Sleep(time.Second)
 	dulces <- "Crusán"
@@ -27,6 +26,5 @@ func main() {
 	dulces <- "Ensaimada"
 	time.Sleep(time.Second)
 
-	// give room to allow all the Engullidors printing the message
-	//	time.Sleep(2 * time.Second)
+	time.Sleep(2 * time.Second)
 }

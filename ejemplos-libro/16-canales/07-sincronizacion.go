@@ -11,7 +11,7 @@ func TareaAsincrona() <-chan struct{} {
 		}
 		fmt.Println("finalizada tarea en paralelo")
 
-		close(ch) // any receive operation will be unblocked
+		close(ch)
 	}()
 	return ch
 }
@@ -20,7 +20,7 @@ func main() {
 
 	espera := TareaAsincrona()
 
-	<-espera // channel output will be ignored
+	<-espera
 
 	fmt.Println("programa finalizado")
 }
