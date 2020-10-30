@@ -1,4 +1,4 @@
-package fact
+package funciones
 
 import "testing"
 

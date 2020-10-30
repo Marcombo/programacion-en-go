@@ -9,6 +9,7 @@ import (
 	"testing"
 )
 
+// Testing: ver capítulo 20
 func TestPost(t *testing.T) {
 	// DADO un servicio REST de guardado de documentos
 	handler := Rest{entradas: map[string]string{}}

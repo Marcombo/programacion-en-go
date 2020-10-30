@@ -38,8 +38,6 @@ func NuevoAccesoDatos(bd *sql.DB) (AccesoDatos, error) {
 }
 
 func main() {
-	// https://astaxie.gitbooks.io/build-web-application-with-golang/content/en/05.3.html
-
 	bd, err := sql.Open("sqlite3", "./archivo.db")
 
 	if err != nil {
@@ -58,13 +56,16 @@ func main() {
 
 	ad, _ := NuevoAccesoDatos(bd)
 
-	/*aula := []Alumno{
+	aula := []Alumno{
 		{Id: "1234A", Nombre: "Jose", Nota: 3.5},
 		{Id: "5678B", Nombre: "Lara", Nota: 10},
 		{Id: "9101C", Nombre: "Sara", Nota: 7.5},
 		{Id: "1121D", Nombre: "Ivan", Nota: 8},
 		{Id: "3141E", Nombre: "Juan", Nota: 5.75},
-	}*/
+	}
+	if err := ad.InsertaTodos(aula); err != nil {
+		fmt.Println("error insertando alumnos:", err)
+	}
 	notables, err := ad.BuscaPorNota(7, 9)
 	if err != nil {
 		panic(err)
