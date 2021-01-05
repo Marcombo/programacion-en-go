@@ -6,3 +6,4 @@ Autor: [Mario Macías Lloret](http://macias.info).
 
 * [Ejemplos de código del libro](./ejemplos-libro)
 * [Capítulo extra: Go y WebAssembly](./wasm-tutorial)
+* [Fe de erratas](./fe-de-erratas.md)
