@@ -10,4 +10,4 @@ ha sido sometido, hemos detectado las siguientes erratas en la primera edición:
   debería decir `3 >= 2 (resultado: true)`
 * Página 32, en el cuadro gris de información. Donde dice _y `"ZZZ" < "aaa"` también retornará `false`_,
   debería decir _y `"ZZZ" < "aaa"` retornará `true`_
-* Contraportada. Donde dice _en la empresa New Relic_, debería decir _en la empresa Red Hat_
+* Contraportada. Donde dice _en la empresa New Relic_, debería decir _en la empresa Red Hat_. No era una errata, pero es un dato desactualizado.
